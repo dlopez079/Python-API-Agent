@@ -40,20 +40,21 @@ def get_people():
 def ask_chatgpt(prompt):
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",  # Use "gpt-3.5-turbo" if needed
-            messages=[{"role": "system", "content": "You are a helpful assistant."},
-                      {"role": "user", "content": prompt}],
-            max_tokens=500,
-            temperature=0.7,
+            model="gpt-4",  # Replace with "gpt-3.5-turbo" if needed
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
         )
+        # Return the assistant's response
         return response['choices'][0]['message']['content'].strip()
-    except openai.error.InvalidRequestError as e:
+    except openai.BadRequestError as e:
         print(f"Invalid request: {e}")
-    except openai.error.AuthenticationError as e:
+    except openai.AuthenticationError as e:
         print(f"Authentication failed: {e}")
-    except openai.error.APIConnectionError as e:
+    except openai.APIConnectionError as e:
         print(f"Failed to connect to OpenAI API: {e}")
-    except openai.error.RateLimitError as e:
+    except openai.RateLimitError as e:
         print(f"Rate limit exceeded: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
